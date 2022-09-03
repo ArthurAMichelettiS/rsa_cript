@@ -1,0 +1,7 @@
+C:\Users\lance\source\repos\rsa_cript\rsa_cript\bin\Debug\rsa_cript.exe.config
+C:\Users\lance\source\repos\rsa_cript\rsa_cript\bin\Debug\rsa_cript.exe
+C:\Users\lance\source\repos\rsa_cript\rsa_cript\bin\Debug\rsa_cript.pdb
+C:\Users\lance\source\repos\rsa_cript\rsa_cript\obj\Debug\rsa_cript.csprojAssemblyReference.cache
+C:\Users\lance\source\repos\rsa_cript\rsa_cript\obj\Debug\rsa_cript.csproj.CoreCompileInputs.cache
+C:\Users\lance\source\repos\rsa_cript\rsa_cript\obj\Debug\rsa_cript.exe
+C:\Users\lance\source\repos\rsa_cript\rsa_cript\obj\Debug\rsa_cript.pdb
