@@ -13,22 +13,22 @@ namespace rsa_cript
         static void Main(string[] args)
         {
 
-            int primoP, primoQ;
-            primoP = 198733;
-            primoQ = 1000231;
+            BigInteger primoP, primoQ;
+            primoP = 10009;
+            primoQ = 17431;
 
-            int valorN = primoQ * primoP;
+            BigInteger valorN = primoQ * primoP;
 
-            int phi = (primoP - 1) * (primoQ - 1);
+            BigInteger phi = (primoP - 1) * (primoQ - 1);
 
-            int coprimeE = 3;
+            BigInteger coprimeE = 3;
 
-            while (coprimeE != 1)
+            while (Util.gcd(phi, coprimeE) != 1)
             {
-                coprimeE = Util.gcd(phi, coprimeE+2);
+                coprimeE = coprimeE+2;
             }
 
-            int valorD = Util.modInverse(coprimeE, phi);
+            BigInteger valorD = Util.modInverse(coprimeE, phi);
 
 
 
@@ -36,38 +36,39 @@ namespace rsa_cript
 
             //Console.WriteLine(gcd(543654638, 3123416));
             string msg = "The information security is of significant importance to ensure the privacy of communications";
-            Console.WriteLine(decriptografa(criptografa(msg, coprimeE, valorN), valorD, valorN));
+            string msgCript = criptografa(msg, coprimeE, valorN);
+            Console.WriteLine(msgCript);
+            Console.WriteLine(decriptografa(msgCript, valorD, valorN));
             Console.ReadKey();
         }
 
-        public static string criptografa(string msg,int e, int N)
+        public static string criptografa(string msg,BigInteger e, BigInteger N)
         {
             string novaMsg = "";
             foreach (char c in msg)
             {
-                int novoVal = (int)Math.Pow(c, e) % N;
-
+                long novoVal = (long)BigInteger.ModPow(c, e, N);
+                
                 novaMsg += (char)(novoVal);
             }
 
             return novaMsg;
         }
 
-        public static string decriptografa(string msg, int d, int N)
+        public static string decriptografa(string msg, BigInteger d, BigInteger N)
         {
             string novaMsg = "";
             foreach (char c in msg)
             {
-                int novoVal = (int)Math.Pow(c, d) % N;
+                long novoVal = (long)BigInteger.ModPow(c, d, N);
 
                 novaMsg += (char)(novoVal);
             }
-
             return novaMsg;
         }
         
 
-        static public int obtemPrimo()
+        static public BigInteger obtemPrimo()
         {
             return 0;
         }
@@ -82,7 +83,7 @@ namespace rsa_cript
         //        Stopwatch s = new Stopwatch();
         //        s.Start();
 
-        //        bool resul = IsPrimo2(BigInteger.Parse(valor), valor.Length);
+        //        bool resul = IsPrimo2(BigBigIntegereger.Parse(valor), valor.Length);
         //        s.Stop();
         //        Console.WriteLine(resul ? "é primo" : "não é primo");
         //        Console.WriteLine(s.Elapsed);
@@ -90,7 +91,7 @@ namespace rsa_cript
         //        Console.WriteLine();
         //        Stopwatch s2 = new Stopwatch();
         //        s2.Start();
-        //        resul = IsPrimo(BigInteger.Parse(valor), valor.Length);
+        //        resul = IsPrimo(BigBigIntegereger.Parse(valor), valor.Length);
         //        s2.Stop();
         //        Console.WriteLine(resul ? "é primo" : "não é primo");
         //        Console.WriteLine(s2.Elapsed);
@@ -99,7 +100,7 @@ namespace rsa_cript
 
         //}
 
-        //static bool IsPrimo(BigInteger n, int tam)
+        //static bool IsPrimo(BigBigIntegereger n, BigInteger tam)
         //{
         //    if (n == 2 || n == 3)
         //        return true;
@@ -108,7 +109,7 @@ namespace rsa_cript
         //        return false;
 
 
-        //    for (BigInteger i = 5; i * i <= n; i += 6)
+        //    for (BigBigIntegereger i = 5; i * i <= n; i += 6)
         //    {
         //        if (n % i == 0 || n % (i + 2) == 0)
         //            return false;
@@ -117,7 +118,7 @@ namespace rsa_cript
         //    return true;
         //}
 
-        //static bool IsPrimo2(BigInteger n, int tam)
+        //static bool IsPrimo2(BigBigIntegereger n, BigInteger tam)
         //{
         //    if (n == 2 || n == 3)
         //        return true;
@@ -126,8 +127,8 @@ namespace rsa_cript
         //        return false;
 
 
-        //    BigInteger raiz = nRapson(n, tam, 3);
-        //    for (BigInteger i = 5; i <= raiz; i += 6)
+        //    BigBigIntegereger raiz = nRapson(n, tam, 3);
+        //    for (BigBigIntegereger i = 5; i <= raiz; i += 6)
         //    {
         //        if (n % i == 0 || n % (i + 2) == 0)
         //            return false;
@@ -136,12 +137,12 @@ namespace rsa_cript
         //    return true;
         //}
 
-        //static BigInteger nRapson(BigInteger valor, int tam, int iteras)
+        //static BigBigIntegereger nRapson(BigBigIntegereger valor, BigInteger tam, BigInteger iteras)
         //{
-        //    BigInteger inicial = BigInteger.Pow(10, (int)Math.Ceiling(tam / 2.0));
-        //    for (int i = 0; i < iteras; i++)
+        //    BigBigIntegereger inicial = BigBigIntegereger.Pow(10, (BigInteger)Math.Ceiling(tam / 2.0));
+        //    for (BigInteger i = 0; i < iteras; i++)
         //    {
-        //        inicial = BigInteger.Divide(BigInteger.Divide(valor, inicial) + inicial, 2);
+        //        inicial = BigBigIntegereger.Divide(BigBigIntegereger.Divide(valor, inicial) + inicial, 2);
         //    }
         //    return inicial;
         //}

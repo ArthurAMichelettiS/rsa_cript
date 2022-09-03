@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,10 +9,10 @@ namespace rsa_cript
 {
     class Util
     {
-        public static int modInverse(int a, int m)
+        public static BigInteger modInverse(BigInteger a, BigInteger m)
         {
-            int m0 = m;
-            int y = 0, x = 1;
+            BigInteger m0 = m;
+            BigInteger y = 0, x = 1;
 
             if (m == 1)
                 return 0;
@@ -19,9 +20,9 @@ namespace rsa_cript
             while (a > 1)
             {
                 // q is quotient
-                int q = a / m;
+                BigInteger q = a / m;
 
-                int t = m;
+                BigInteger t = m;
 
                 // m is remainder now, process
                 // same as Euclid's algo
@@ -42,9 +43,9 @@ namespace rsa_cript
         }
 
         // Returns gcd of a and b
-        public static int gcd(int a, int b)
+        public static BigInteger gcd(BigInteger a, BigInteger b)
         {
-            int aux;
+            BigInteger aux;
             while (true)
             {
                 aux = a % b;
