@@ -21,10 +21,81 @@ namespace rsa_cript
 
             int phi = (primoP - 1) * (primoQ - 1);
 
+            int coprimeE = 3;
+
+            while (coprimeE != 1)
+            {
+                coprimeE = gcd(phi, coprimeE);
+            }
+
+            int valorD = modInverse(coprimeE, phi);
 
 
-            Console.WriteLine(gcd(543654638, 3123416));
 
+            // coprimeE*valorD % phi = 1
+
+            //Console.WriteLine(gcd(543654638, 3123416));
+
+        }
+
+        public string criptografa(string msg,int e, int N)
+        {
+            string novaMsg = "";
+            foreach (char c in msg)
+            {
+                int novoVal = (int)Math.Pow(c, e) % N;
+
+                novaMsg += (char)(novoVal);
+            }
+
+            return novaMsg;
+        }
+
+        public string decriptografa(string msg, int d, int N)
+        {
+            string novaMsg = "";
+            foreach (char c in msg)
+            {
+                int novoVal = (int)Math.Pow(c, d) % N;
+
+                novaMsg += (char)(novoVal);
+            }
+
+            return novaMsg;
+        }
+
+
+        static int modInverse(int a, int m)
+        {
+            int m0 = m;
+            int y = 0, x = 1;
+
+            if (m == 1)
+                return 0;
+
+            while (a > 1)
+            {
+                // q is quotient
+                int q = a / m;
+
+                int t = m;
+
+                // m is remainder now, process
+                // same as Euclid's algo
+                m = a % m;
+                a = t;
+                t = y;
+
+                // Update x and y
+                y = x - q * y;
+                x = t;
+            }
+
+            // Make x positive
+            if (x < 0)
+                x += m0;
+
+            return x;
         }
 
         // Returns gcd of a and b
@@ -39,7 +110,7 @@ namespace rsa_cript
                 a = b;
                 b = aux;
             }
-            return -1;
+            //return -1;
         }
 
         static public int obtemPrimo()

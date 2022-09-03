@@ -4,6 +4,12 @@ namespace rsa_cript
 {
     class prime
     {
+        public static int obtemPrimo()
+        {
+            //todo
+            return 0;
+        }
+
         static void Main(string[] args)
         {
             int[] first_primes_list = new int[]
