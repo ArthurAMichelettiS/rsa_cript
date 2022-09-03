@@ -14,8 +14,8 @@ namespace rsa_cript
         {
 
             int primoP, primoQ;
-            primoP = obtemPrimo();
-            primoQ = obtemPrimo();
+            primoP = 198733;
+            primoQ = 1000231;
 
             int valorN = primoQ * primoP;
 
@@ -25,20 +25,22 @@ namespace rsa_cript
 
             while (coprimeE != 1)
             {
-                coprimeE = gcd(phi, coprimeE);
+                coprimeE = Util.gcd(phi, coprimeE+2);
             }
 
-            int valorD = modInverse(coprimeE, phi);
+            int valorD = Util.modInverse(coprimeE, phi);
 
 
 
             // coprimeE*valorD % phi = 1
 
             //Console.WriteLine(gcd(543654638, 3123416));
-
+            string msg = "The information security is of significant importance to ensure the privacy of communications";
+            Console.WriteLine(decriptografa(criptografa(msg, coprimeE, valorN), valorD, valorN));
+            Console.ReadKey();
         }
 
-        public string criptografa(string msg,int e, int N)
+        public static string criptografa(string msg,int e, int N)
         {
             string novaMsg = "";
             foreach (char c in msg)
@@ -51,7 +53,7 @@ namespace rsa_cript
             return novaMsg;
         }
 
-        public string decriptografa(string msg, int d, int N)
+        public static string decriptografa(string msg, int d, int N)
         {
             string novaMsg = "";
             foreach (char c in msg)
@@ -63,55 +65,7 @@ namespace rsa_cript
 
             return novaMsg;
         }
-
-
-        static int modInverse(int a, int m)
-        {
-            int m0 = m;
-            int y = 0, x = 1;
-
-            if (m == 1)
-                return 0;
-
-            while (a > 1)
-            {
-                // q is quotient
-                int q = a / m;
-
-                int t = m;
-
-                // m is remainder now, process
-                // same as Euclid's algo
-                m = a % m;
-                a = t;
-                t = y;
-
-                // Update x and y
-                y = x - q * y;
-                x = t;
-            }
-
-            // Make x positive
-            if (x < 0)
-                x += m0;
-
-            return x;
-        }
-
-        // Returns gcd of a and b
-        static int gcd(int a, int b)
-        {
-            int aux;
-            while (true)
-            {
-                aux = a % b;
-                if (aux == 0)
-                    return b;
-                a = b;
-                b = aux;
-            }
-            //return -1;
-        }
+        
 
         static public int obtemPrimo()
         {

@@ -10,7 +10,7 @@ namespace rsa_cript
             return 0;
         }
 
-        static void Main(string[] args)
+        static void bob(string[] args)
         {
             int[] first_primes_list = new int[]
 
