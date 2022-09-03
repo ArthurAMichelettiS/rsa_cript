@@ -14,9 +14,17 @@ namespace rsa_cript
         {
 
             BigInteger primoP, primoQ;
-            primoP = 10009;
-            primoQ = 17431;
+            primoP = prime.obtemPrimo();
+            primoQ = prime.obtemPrimo();
+            //primoP = 239;
+            //primoQ = 331;
 
+            if (primoP > primoQ)
+            {
+                BigInteger aux = primoQ;
+                primoQ = primoP;
+                primoP = aux;
+            }
             BigInteger valorN = primoQ * primoP;
 
             BigInteger phi = (primoP - 1) * (primoQ - 1);
@@ -35,43 +43,79 @@ namespace rsa_cript
             // coprimeE*valorD % phi = 1
 
             //Console.WriteLine(gcd(543654638, 3123416));
+            //string msg = "The information security is of significant importance to ensure the privacy of communications";
             string msg = "The information security is of significant importance to ensure the privacy of communications";
-            string msgCript = criptografa(msg, coprimeE, valorN);
-            Console.WriteLine(msgCript);
+            long[] msgCript = criptografa(msg, coprimeE, valorN);
+            Console.WriteLine(numPraString(msgCript));
             Console.WriteLine(decriptografa(msgCript, valorD, valorN));
             Console.ReadKey();
         }
 
-        public static string criptografa(string msg,BigInteger e, BigInteger N)
+        public static string numPraString(long[] val)
         {
-            string novaMsg = "";
+            string txt = "";
+            foreach (long item in val)
+            {
+                txt += (char)item;
+            }
+            return txt;
+        }
+
+        public static long[] criptografa(string msg,BigInteger e, BigInteger N)
+        {
+            long[] novaMsg = new long[msg.Length];
+            int cont = 0;
             foreach (char c in msg)
             {
                 long novoVal = (long)BigInteger.ModPow(c, e, N);
-                
-                novaMsg += (char)(novoVal);
+
+                novaMsg[cont]= (novoVal);
+                cont += 1;
             }
+            //for (int i = 0; i < msg.Length; i += 3)
+            //{
+            //    string temp = msg.Substring(i, 3);
+            //    BigInteger txtConvertido = new BigInteger(Encoding.UTF8.GetBytes(temp));
+            //    byte[] bytes = BigInteger.ModPow(txtConvertido, e, N).ToByteArray();
+            //    novaMsg += Encoding.UTF8.GetString(bytes);
+            //}
+            //BigInteger txtConvertido = new BigInteger(Encoding.UTF8.GetBytes(msg));
+            //byte[] bytes = BigInteger.ModPow(txtConvertido, e, N).ToByteArray();
+            //novaMsg = Encoding.UTF8.GetString(bytes);
 
             return novaMsg;
         }
 
-        public static string decriptografa(string msg, BigInteger d, BigInteger N)
+        public static string decriptografa(long[] msg, BigInteger d, BigInteger N)
         {
             string novaMsg = "";
-            foreach (char c in msg)
+            foreach (long c in msg)
             {
                 long novoVal = (long)BigInteger.ModPow(c, d, N);
 
                 novaMsg += (char)(novoVal);
             }
+
+            //for (int i = 0; i < msg.Length; i += 3)
+            //{
+            //    string temp = msg.Substring(i, 3);
+            //    BigInteger txtConvertido = new BigInteger(Encoding.UTF8.GetBytes(temp));
+            //    byte[] bytes = BigInteger.ModPow(txtConvertido, d, N).ToByteArray();
+            //    novaMsg += Encoding.UTF8.GetString(bytes);
+            //}
+
+            //BigInteger txtConvertido = new BigInteger(Encoding.UTF8.GetBytes(msg));
+            //byte[] bytes = BigInteger.ModPow(txtConvertido, d, N).ToByteArray();
+            //novaMsg = Encoding.UTF8.GetString(bytes);
+
             return novaMsg;
         }
         
 
-        static public BigInteger obtemPrimo()
-        {
-            return 0;
-        }
+        //static public BigInteger obtemPrimo()
+        //{
+        //    return 0;
+        //}
 
         //void t0()
         //{

@@ -1,17 +1,15 @@
 ﻿using System;
+using System.Numerics;
 
 namespace rsa_cript
 {
     class prime
     {
-        public static int obtemPrimo()
+        
+        public static BigInteger obtemPrimo()
         {
-            //todo
-            return 0;
-        }
 
-        static void bob(string[] args)
-        {
+
             int[] first_primes_list = new int[]
 
             { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29,
@@ -25,19 +23,25 @@ namespace rsa_cript
                 307, 311, 313, 317, 331, 337, 347, 349 };
 
             //N1 RSA
-            int nbit = 128; //número de bits
+            int nbit = 32; //número de bits
 
-            int nBitRandom(int n)
+            BigInteger nBitRandom(int n)
             {
                 Random r = new Random();
-                return (int)r.Next((int)Math.Pow(2, n - 1) + 1, (int)Math.Pow(2, n) - 1);
+                byte[] data = new byte[n];
+                r.NextBytes(data);
+                BigInteger valor = new BigInteger(data);
+                if (valor.Sign == -1)
+                    valor *= -1;
+                return valor;
+                //return (int)r.Next((int)Math.Pow(2, n - 1) + 1, (int)Math.Pow(2, n) - 1);
             }
 
-            int getLowLevelPrime(int n)
+            BigInteger getLowLevelPrime(int n)
             {
                 while (true)
                 {
-                    int prime_candidate = nBitRandom(nbit);
+                    BigInteger prime_candidate = nBitRandom(nbit);
 
                     foreach (int divisor in first_primes_list)
                     {
@@ -53,21 +57,74 @@ namespace rsa_cript
                 }
             }
 
-            int isMillerRabinPassed(int miller_rabin_candidate)
+            bool isMillerRabinPassed(BigInteger miller_rabin_candidate)
             {
                 int maxDivisionsByTwo = 0;
-                int evenComponent = miller_rabin_candidate - 1;
+                BigInteger evenComponent = miller_rabin_candidate + BigInteger.MinusOne;
 
                 while ((evenComponent % 2) == 0)
                 {
                     evenComponent >>= 1;
                     maxDivisionsByTwo += 1;
                 }
-                return 0;
+
                 // assert(2**maxDivisionsByTwo * evenComponent == miller_rabin_candidate-1)
 
-                //difficultttttttt
+                bool trialComposite(BigInteger round_tester)
+                {
+                    if (BigInteger.ModPow(round_tester, evenComponent, miller_rabin_candidate) == 1)
+                    {
+                        return false;
+                    }
+                    for (int i = 0; i <= maxDivisionsByTwo; i++)
+                    {
+                        if (BigInteger.ModPow(round_tester, new BigInteger(Math.Pow(2, i)) * evenComponent,miller_rabin_candidate) == 1)
+                        {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+
+                int numberOfTrials = 20;
+
+                for (int i = 0; i <= numberOfTrials; i++)
+                {
+                    Random rr = new Random();
+                    //int round_tester = rr.Next(2, miller_rabin_candidate);
+                    BigInteger round_tester = RandomIntegerBelow(miller_rabin_candidate);
+                    if (trialComposite(round_tester))
+                    {
+                        return false;
+                    }
+                }
+                return true;
             }
+
+            
+
+            while (true){
+                int n = 512;
+                BigInteger prime_candidate = getLowLevelPrime(n);
+                if (isMillerRabinPassed(prime_candidate))
+                    return prime_candidate;
+            }
+                    
+        }
+
+        public static BigInteger RandomIntegerBelow(BigInteger N)
+        {
+            byte[] bytes = N.ToByteArray();
+            BigInteger R;
+            Random r = new Random();
+            do
+            {
+                r.NextBytes(bytes);
+                bytes[bytes.Length - 1] &= (byte)0x7F; //force sign bit to positive
+                R = new BigInteger(bytes);
+            } while (R >= N);
+            //Console.WriteLine(R);
+            return R;
         }
     }
 }
