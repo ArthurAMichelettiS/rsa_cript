@@ -53,7 +53,7 @@ namespace rsa_cript
                 }
             }
 
-            int isMillerRabinPassed(int miller_rabin_candidate)
+            bool isMillerRabinPassed(int miller_rabin_candidate)
             {
                 int maxDivisionsByTwo = 0;
                 int evenComponent = miller_rabin_candidate - 1;
@@ -63,10 +63,37 @@ namespace rsa_cript
                     evenComponent >>= 1;
                     maxDivisionsByTwo += 1;
                 }
-                return 0;
+
                 // assert(2**maxDivisionsByTwo * evenComponent == miller_rabin_candidate-1)
 
-                //difficultttttttt
+                bool trialComposite(int round_tester)
+                {
+                    if ((int)Math.Pow(round_tester, evenComponent) % miller_rabin_candidate == 1)
+                    {
+                        return false;
+                    }
+                    for (int i = 0; i <= maxDivisionsByTwo; i++)
+                    {
+                        if ((int)Math.Pow(round_tester, Math.Pow(2, i * evenComponent) % miller_rabin_candidate) == 1)
+                        {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+
+                int numberOfTrials = 20;
+
+                for (int i = 0; i <= numberOfTrials; i++)
+                {
+                    Random rr = new Random();
+                    int round_tester = rr.Next(2, miller_rabin_candidate);
+                    if (trialComposite(round_tester))
+                    {
+                        return false;
+                    }
+                }
+                return true;
             }
         }
     }
