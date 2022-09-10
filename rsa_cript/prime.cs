@@ -6,7 +6,7 @@ namespace rsa_cript
     class prime
     {
         
-        public static BigInteger obtemPrimo()
+        public static BigInteger obtemPrimo(int numeroDeBits)
         {
 
 
@@ -23,7 +23,7 @@ namespace rsa_cript
                 307, 311, 313, 317, 331, 337, 347, 349 };
 
             //N1 RSA
-            int nbit = 32; //número de bits
+            int nbit = numeroDeBits; //número de bits
 
             BigInteger nBitRandom(int n)
             {
@@ -104,7 +104,7 @@ namespace rsa_cript
             
 
             while (true){
-                int n = 512;
+                int n = numeroDeBits;
                 BigInteger prime_candidate = getLowLevelPrime(n);
                 if (isMillerRabinPassed(prime_candidate))
                     return prime_candidate;
